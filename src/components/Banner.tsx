@@ -13,11 +13,13 @@ export default function Banner(){
     const router = useRouter()
     
     const { data: session } = useSession(); 
-    console.log(session?.user.token)
+    
+    console.log((session?.user as any)?.token); 
+    
     return (
         <div className={styles.banner} onClick={()=>{
-        setIndex((prev)=> (prev + 1) % covers.length)
-    }}>
+            setIndex((prev)=> (prev + 1) % covers.length)
+        }}>
             <Image src={covers[index]}
             alt='event'
             fill={true}
@@ -29,9 +31,9 @@ export default function Banner(){
                 <h3>Find and book the ideal venue for your unforgettable events.</h3>
             </div>
 
-            {session ? (
+            {session?.user ? (
                 <div className="z-30 absolute top-5 right-10 font-semibold text-cyan-800 text-2xl bg-white/80 px-4 py-2 rounded-full shadow-md">
-                    Welcome {session.user?.name}
+                    Welcome {session.user.name}
                 </div>
             ) : null}
 

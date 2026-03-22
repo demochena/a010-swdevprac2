@@ -1,40 +1,52 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BookingItem } from "../../../interface"; // ⚠️ เช็ค path ให้ตรงกับโปรเจกต์คุณด้วยนะครับ
+import { createSlice } from "@reduxjs/toolkit"
 
-// ตั้งค่า James เป็นค่าเริ่มต้น เพื่อให้ Test 2 (Booking Page) หาเจอทันที
-const initialState: { bookItems: BookingItem[] } = {
-  bookItems: [
-    {
-      nameLastname: "James Weston",
-      tel: "0827789544",
-      venue: "Bloom",
-      bookDate: "2025/03/21"
-    }
-  ]
-};
+export interface BookingItem {
+  nameLastname: string
+  tel: string
+  venue: string
+  bookDate: string
+}
+
+type BookState = {
+  bookItems: BookingItem[]
+}
+
+const initialState: BookState = {
+  bookItems: []
+}
 
 export const bookSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
-    addBooking: (state, action: PayloadAction<BookingItem>) => {
-      // 1. เพิ่มข้อมูลใหม่ต่อท้ายเสมอ
-      state.bookItems.push(action.payload);
-      
-      // 2. Test 1 บังคับว่าถ้าเพิ่มคนที่ 3 แล้ว length ต้องยังเป็น 2
-      // ดังนั้นถ้าเกิน 2 รายการ ให้ลบอันที่เก่าที่สุด (อันแรก) ทิ้งไปเลย
-      if (state.bookItems.length > 2) {
-        state.bookItems.shift(); 
+    addBooking: (state, action) => {
+      const index = state.bookItems.findIndex(
+        (item) =>
+          item.venue === action.payload.venue &&
+          item.bookDate === action.payload.bookDate
+      )
+
+      if (index !== -1) {
+        state.bookItems[index] = action.payload
+      } else {
+        state.bookItems.push(action.payload)
       }
     },
-    removeBooking: (state, action: PayloadAction<BookingItem>) => {
-      // 3. ลบเฉพาะรายการที่ตรงกับชื่อที่ส่งมา (Test 1 จะใช้ลบ Jane ออก)
+
+    removeBooking: (state, action) => {
       state.bookItems = state.bookItems.filter(
-        (item) => item.nameLastname !== action.payload.nameLastname
-      );
+        (item) =>
+          !(
+            item.nameLastname === action.payload.nameLastname &&
+            item.tel === action.payload.tel &&
+            item.venue === action.payload.venue &&
+            item.bookDate === action.payload.bookDate
+          )
+      )
     }
   }
-});
+})
 
-export const { addBooking, removeBooking } = bookSlice.actions;
-export default bookSlice.reducer;
+export const { addBooking, removeBooking } = bookSlice.actions
+
+export default bookSlice.reducer
