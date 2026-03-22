@@ -1,0 +1,6 @@
+.sectionlayout {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    color: black;
+}
