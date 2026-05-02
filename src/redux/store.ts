@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
-import bookReducer from "./features/bookSlice"
+import bookReducer, { bookSlice } from "./features/bookSlice"
 import { persistReducer } from "redux-persist"
 import createWebStorage from "redux-persist/lib/storage/createWebStorage"
 
@@ -25,7 +25,7 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-  book: bookReducer
+  bookSlice: bookReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

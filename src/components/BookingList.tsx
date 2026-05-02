@@ -5,7 +5,7 @@ import { removeBooking } from "@/redux/features/bookSlice"
 import { BookingItem } from "../../interface" // ⚠️ เช็ค path ด้วยนะครับ
 
 export default function BookingList() {
-  const bookings = useSelector((state: RootState) => state.book?.bookItems || [])
+  const bookings = useSelector((state: RootState) => state.bookSlice?.bookItems || [])
   const dispatch = useDispatch()
 
   if (bookings.length === 0) {
